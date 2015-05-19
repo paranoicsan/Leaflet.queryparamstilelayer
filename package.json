@@ -1,0 +1,9 @@
+{
+  "name": "leaflet.queryparamstilelayer",
+  "version": "0.0.1",
+  "description": "Leaflet tile layer with functionality to pass query parameters.",
+  "keywords": ["leaflet"],
+  "main": "src/leaflet.tilelayerqueryparams.js",
+  "author": "Alexander Kuznetsov",
+  "license": "MIT"
+}
