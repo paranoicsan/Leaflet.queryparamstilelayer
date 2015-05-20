@@ -2,7 +2,7 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
 
     queryParams: null,
 
-    initialize: function (url, queryParams, options) {
+    initialize: function (queryParams, url, options) {
         this.queryParams = queryParams;
         L.TileLayer.prototype.initialize.call(this, url, options);
     },
@@ -22,7 +22,7 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
             if (this.queryParams.hasOwnProperty(param)) {
                 var val = null;
                 if (typeof this.queryParams[param] === 'function') {
-                    val = this.queryParams[param].call();
+                    val = this.queryParams[param].call(this, Date.now());
                 } else {
                     val = this.queryParams[param];
                 }
@@ -34,6 +34,6 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
     }
 });
 
-L.tileLayer.queryParams = function (url, queryParams, options) {
-    return new L.TileLayer.QueryParams(url, queryParams, options);
+L.tileLayer.queryParams = function (queryParams, options) {
+    return new L.TileLayer.QueryParams(queryParams, options);
 };

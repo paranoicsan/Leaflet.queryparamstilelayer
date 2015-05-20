@@ -10,15 +10,15 @@ Use it like any other tile layer and provide additional parameters need to be pa
 as query when retrieving a tile.
 
 Parameter can be a function. Then it will be executed in the moment when tileUrl will
-be generated.
+be generated. As an argument it accepts timestamp `Date.now()` at the moment function has been called
 
 ```javascript
 var layer = new L.TileLayer.QueryParams(
   'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
   {
     param1: 'value',
-    param2: function() {
-        return Date.now();
+    param2: function(dateNow) {
+        return dateNow;
     }
   },
   options
