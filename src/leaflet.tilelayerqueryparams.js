@@ -2,8 +2,14 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
 
     queryParams: null,
 
+    queryFunc: null,
+
     initialize: function (queryParams, url, options) {
-        this.queryParams = queryParams;
+        if (typeof queryParams === 'function') {
+            this.queryFunc = queryParams;
+        } else {
+            this.queryParams = queryParams;
+        }
         L.TileLayer.prototype.initialize.call(this, url, options);
     },
 
@@ -16,7 +22,17 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
             z: this._getZoomForUrl()
         }, this.options));
 
-        url += '?';
+        url += '?' + this._buildParams();
+
+        return url
+    },
+
+    _buildParams: function() {
+        var paramsStr = '';
+
+        if (this.queryFunc != null) {
+            this.queryParams = this.queryFunc.call(this, Date.now());
+        }
 
         for (var param in this.queryParams) {
             if (this.queryParams.hasOwnProperty(param)) {
@@ -26,12 +42,15 @@ L.TileLayer.QueryParams = L.TileLayer.extend({
                 } else {
                     val = this.queryParams[param];
                 }
-                url += param + '=' + val + '&';
+                paramsStr += param + '=' + val + '&';
             }
         }
 
-        return url;
+        return paramsStr;
     }
+
+
+
 });
 
 L.tileLayer.queryParams = function (queryParams, options) {

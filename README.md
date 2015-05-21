@@ -9,20 +9,30 @@ Leaflet tile layer with functionality to pass query parameters.
 Use it like any other tile layer and provide additional parameters need to be passed
 as query when retrieving a tile.
 
-Parameter can be a function. Then it will be executed in the moment when tileUrl will
-be generated. As an argument it accepts timestamp `Date.now()` at the moment function has been called
+Properties of `params` object can be a function. Then they will be executed in the moment when tileUrl
+will be generated. As an argument it accepts timestamp `Date.now()` at the moment function has been called.
 
 ```javascript
-var layer = new L.TileLayer.QueryParams(
-  'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-  {
+var params = {
     param1: 'value',
     param2: function(dateNow) {
         return dateNow;
     }
-  },
-  options
-);
+}
+var layer = new L.TileLayer.QueryParams(params, 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', options);
+```
+
+Also `params` can be a function which accepts `Date.now()` as input parameter and returns an object which
+will be used to build up query string.
+
+```javascript
+var paramsFunc = function(timestamp) {
+    return {
+        t: timestamp,
+        g: 1
+    }
+}
+var layer = new L.TileLayer.QueryParams(paramsFunc, 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', options);
 ```
 
 ## License
